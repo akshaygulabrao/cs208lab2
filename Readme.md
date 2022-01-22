@@ -14,5 +14,5 @@ same machine.
 In terms of difficulty, I would rate this lab as 4/10. It took me approximately 6 hours (in 1 sitting) to complete. Not terribly difficult for a CS lab. 
 
 ## Sources
-(https://medium.com/techanic/docker-containers-ipc-using-sockets-part-1-2ee90885602c)
-(https://github.com/TomPrograms/Simple-Python-File-Transfer-Server)
+https://medium.com/techanic/docker-containers-ipc-using-sockets-part-1-2ee90885602c
+https://github.com/TomPrograms/Simple-Python-File-Transfer-Server
