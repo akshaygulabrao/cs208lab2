@@ -6,6 +6,9 @@ from Assignment 1 and containerize your applications. There will be two containe
 for the server and another for the client application. You can create two containers in the
 same machine.
 
+## Quick Demo
+https://youtu.be/IHJAa3OyTGM
+
 ## Mistakes this lab
 1. Used local Windows for Docker instead of cloudlab Ubuntu
 2. Could not get client to pass the IP address. The IP address was fetched using gethostname cmd.
