@@ -1,14 +1,21 @@
+import sys
 import socket
+import hashlib
 import os
-
+def md5(fname):
+    hash_md5 = hashlib.md5()
+    with open(fname, "rb") as f:
+        for chunk in iter(lambda: f.read(4096), b""):
+            hash_md5.update(chunk)
+    return hash_md5.hexdigest()
 class Client:
     def __init__(self):
         self.s = socket.socket(socket.AF_INET,socket.SOCK_STREAM)
         self.connect_to_server()
 
     def connect_to_server(self):
-        self.target_ip = socket.gethostbyname('ips_server_dns_name') 
-        self.target_port = 9898 
+        self.target_ip = socket.gethostbyname('ipc_server_dns_name') 
+        self.target_port = sys.argv[1] 
         print(self.target_ip,self.target_port)
 
         self.s.connect((self.target_ip,int(self.target_port)))
@@ -22,6 +29,7 @@ class Client:
     def main(self):
         file_name = 'mydata.txt' 
         self.s.send(file_name.encode())
+        print(f'Requesting {file_name}')
 
         confirmation = self.s.recv(1024)
         if confirmation.decode() == "file-doesn't-exist":
@@ -29,10 +37,9 @@ class Client:
 
             self.s.shutdown(socket.SHUT_RDWR)
             self.s.close()
-            self.reconnect()
 
         else:        
-            write_name = 'from_server '+file_name
+            write_name = file_name
             if os.path.exists(write_name): os.remove(write_name)
 
             with open(write_name,'wb') as file:
@@ -44,7 +51,7 @@ class Client:
 
                     file.write(data)
 
-            print(file_name,'successfully downloaded.')
+            print(file_name,'successfully downloaded. Checksum: ', md5("mydata.txt"))
 
             self.s.shutdown(socket.SHUT_RDWR)
             self.s.close()

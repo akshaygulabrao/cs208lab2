@@ -5,4 +5,4 @@ ADD client.py /client_persistent_storage/
 # '/server/' is base directory
 WORKDIR /client_persistent_storage/
 # execute the command
-CMD [ "python3", "client.py" ]
+CMD [ "python3", "client.py","9898" ]

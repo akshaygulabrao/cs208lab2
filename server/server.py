@@ -1,14 +1,20 @@
 import socket
 import threading
+import hashlib
 import os
-
+def md5(fname):
+    hash_md5 = hashlib.md5()
+    with open(fname, "rb") as f:
+        for chunk in iter(lambda: f.read(4096), b""):
+            hash_md5.update(chunk)
+    return hash_md5.hexdigest()
 class Server:
     def __init__(self):
         self.s = socket.socket(socket.AF_INET,socket.SOCK_STREAM)
         self.accept_connections()
     
     def accept_connections(self):
-        ip = socket.gethostbyname(socket.gethostname())
+        ip = socket.gethostbyname('ipc_server_dns_name')
         port = 9898
 
         self.s.bind((ip,port))
@@ -17,11 +23,9 @@ class Server:
         print('Running on IP: '+ip)
         print('Running on port: '+str(port))
 
-        while 1:
-            c, addr = self.s.accept()
-            print(c)
-            
-            threading.Thread(target=self.handle_client,args=(c,addr,)).start()
+        c, addr = self.s.accept()
+        print(c)
+        threading.Thread(target=self.handle_client,args=(c,addr,)).start()
 
     def handle_client(self,c,addr):
         data = c.recv(1024).decode()
@@ -31,6 +35,7 @@ class Server:
 
         else:
             c.send("file-exists".encode())
+            print("Checksum: ",md5(data))
             print('Sending',data)
             if data != '':
                 file = open(data,'rb')
